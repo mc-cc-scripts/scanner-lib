@@ -11,14 +11,18 @@ Scanner = {}
 
 
 -- REQUIREMENTS
----@class HelperFunctions
-local helper = require("HelperFunctions");
+--@requires helperFunctions
+---@class helperFunctions
+local helper = require("./libs/helperFunctions");
+--@requires turtleController
 ---@class turtleController
-local tController = require("TurtleControler")
+local tController = require("./libs/turtleController")
+--@requires settingsService
 ---@class SettingsService
-local settingsService = require("SettingsService")
+local settingsService = require("./libs/settingsService")
+--@requires log
 ---@class Log
-local log = require("Log")
+local log = require("./libs/log")
 
 -- DEFINITIONS
 
