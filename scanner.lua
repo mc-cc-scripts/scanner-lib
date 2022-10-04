@@ -1,4 +1,4 @@
----@class FindPathToBlocks
+---@class Scanner
 -- Settings:
 -- - Setting: ScanDataFile
 -- - Setting: InterestingBlocks
