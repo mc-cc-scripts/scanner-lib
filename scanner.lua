@@ -17,9 +17,9 @@ local helper = require("./libs/helperFunctions");
 --@requires turtleController
 ---@class turtleController
 local tController = require("./libs/turtleController")
---@requires settingManager
+--@requires settingsManager
 ---@class settingManager
-local settingsService = require("./libs/settingManager")
+local settingsService = require("./libs/settingsManager")
 --@requires log
 ---@class Log
 local log = require("./libs/log")
