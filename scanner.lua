@@ -12,7 +12,7 @@ Scanner = {}
 
 -- REQUIREMENTS
 --@requires helperFunctions
----@class helperFunctions
+---@class HelperFunctions
 local helper = require("./libs/helperFunctions");
 --@requires turtleController
 ---@class turtleController
@@ -38,7 +38,42 @@ local log = require("./libs/log")
 
 
 local defaultInterestingBlocks = {
-    ["minecraft:deepslate_gold_ore"] = true
+    ["minecraft:deepslate_gold_ore"] = true,
+    ["minecraft:gold_ore"] = true,
+    ["minecraft:deepslate_iron_ore"] = true,
+    ["minecraft:iron_ore"] = true,
+    ["minecraft:deepslate_coal_ore"] = true,
+    ["minecraft:coal_ore"] = true,
+    ["minecraft:deepslate_copper_ore"] = true,
+    ["minecraft:copper_ore"] = true,
+    ["minecraft:deepslate_emerald_ore"] = true,
+    ["minecraft:emerald_ore"] = true,
+    ["minecraft:deepslate_lapis_ore"] = true,
+    ["minecraft:lapis_ore"] = true,
+    ["minecraft:deepslate_diamond_ore"] = true,
+    ["minecraft:diamond_ore"] = true,
+    ["minecraft:deepslate_redstone_ore"] = true,
+    ["minecraft:redstone_ore"] = true,
+    ["minecraft:nether_gold_ore"] = true,
+    ["minecraft:nether_quartz_ore"] = true,
+    ["thermal:apatite_ore"] = true,
+    ["thermal:deepslate_apatite_ore"] = true,
+    ["thermal:niter_ore"] = true,
+    ["thermal:deepslate_niter_ore"] = true,
+    ["thermal:nickel_ore"] = true,
+    ["thermal:deepslate_nickel_ore"] = true,
+    ["thermal:tin_ore"] = true,
+    ["thermal:deepslate_tin_ore"] = true,
+    ["thermal:silver_ore"] = true,
+    ["thermal:deepslate_silver_ore"] = true,
+    ["thermal:lead_ore"] = true,
+    ["thermal:deepslate_lead_ore"] = true,
+    ["thermal:cinnabar_ore"] = true,
+    ["thermal:deepslate_cinnabar_ore"] = true,
+    ["rftoolsbase:dimensionalshard_end"] = true,
+    ["create:zinc_ore"] = true,
+    ["rftoolsbase:dimensionalshard_overworld"] = true,
+    ["rftoolsbase:dimensionalshard_nether"] = true,
 }
 
 ---comment
@@ -99,7 +134,6 @@ function Scanner.sortFilteredScan(scanResult)
     local currentPosition = { x = 0, y = 0, z = 0 }
     local func = function(block1, block2, cPosition)
         local calcDist = function(block, currPos)
-
             local x = block.x - currPos.x;
             local y = block.y - currPos.y;
             local z = block.z - currPos.z;
@@ -115,6 +149,37 @@ function Scanner.sortFilteredScan(scanResult)
     local filePathSorted = settingsService.setget("ScanSorted", nil, "./ScanData/LastScanSorted.lua");
     log.write(scanResult, filePathSorted, "w+")
     return scanResult;
+end
+
+---@alias rotation
+---| 0 # +X
+---| 1 # +Z
+---| 2 # -X
+---| 3 # -Z
+
+---corrects the ScannedPoints relative to the direction the turtle is facing
+---@param dataTable ScanDataTable
+---@param rotation rotation
+function Scanner.correctToFacing(dataTable, rotation)
+    ---comment
+    ---@param data ScanData
+    ---@param rotation rotation
+    function map(data, rotation)
+        if rotation == 2 then
+            data.x = data.x * -1
+        end
+        if rotation == 3 then
+            data.z = data.z * -1
+        end
+        if rotation % 2 == 1 then
+            local temp = data.x
+            data.x = data.z
+            data.z = temp
+        end
+        return data
+    end
+
+    return helper.map(dataTable, map, rotation)
 end
 
 ---Creates a Path from a Table of <ScanData>
