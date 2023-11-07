@@ -72,6 +72,7 @@ local defaultInterestingBlocks = {
     ["thermal:deepslate_cinnabar_ore"] = true,
     ["rftoolsbase:dimensionalshard_end"] = true,
     ["create:zinc_ore"] = true,
+    ["create:deepslate_zinc_ore"] = true,
     ["rftoolsbase:dimensionalshard_overworld"] = true,
     ["rftoolsbase:dimensionalshard_nether"] = true,
 }
