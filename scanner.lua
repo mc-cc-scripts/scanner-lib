@@ -165,15 +165,18 @@ function Scanner.correctToFacing(dataTable, rotation)
     ---@param data ScanData
     ---@param rotation rotation
     function map(data, rotation)
-        if rotation == 2 then
-            data.x = data.x * -1
-        end
-        if rotation == 3 then
-            data.z = data.z * -1
-        end
-        if rotation % 2 == 1 then
+        if rotation == 1 then
             local temp = data.x
             data.x = data.z
+            data.z = temp * -1
+        end
+        if rotation == 2 then
+            data.x = data.x * -1
+            data.z = data.z * -1
+        end
+        if rotation == 3 then
+            local temp = data.x
+            data.x = data.z * -1
             data.z = temp
         end
         return data
