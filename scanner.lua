@@ -56,6 +56,7 @@ local defaultInterestingBlocks = {
     ["minecraft:redstone_ore"] = true,
     ["minecraft:nether_gold_ore"] = true,
     ["minecraft:nether_quartz_ore"] = true,
+    ["minecraft:ancient_debris"] =  true,
     ["thermal:apatite_ore"] = true,
     ["thermal:deepslate_apatite_ore"] = true,
     ["thermal:niter_ore"] = true,
