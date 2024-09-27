@@ -11,18 +11,17 @@ Scanner = {}
 
 
 -- REQUIREMENTS
+---@type scm
+local scm = require("scm")
 --@requires helperFunctions
 ---@class HelperFunctions
-local helper = require("./libs/helperFunctions");
+local helper = scm:load("helperFunctions");
 --@requires turtleController
 ---@class turtleController
-local tController = require("./libs/turtleController")
+local tController = scm:load("turtleController")
 --@requires settingsManager
 ---@class settingManager
-local settingsService = require("./libs/settingsManager")
---@requires log
----@class Log
-local log = require("./libs/log")
+local settingsService = scm:load("settingsManager")
 
 -- DEFINITIONS
 
@@ -34,7 +33,7 @@ local log = require("./libs/log")
 ---@field name string
 
 ---@class ScanDataTable
----@field _ ScanData
+---@field table ScanData
 
 
 local defaultInterestingBlocks = {
@@ -83,10 +82,12 @@ local defaultInterestingBlocks = {
 ---@return ScanDataTable
 local function scan(radius)
     ---@type table
-    local g = peripheral.find("geoScanner")
-    if g == 0 then return nil end
+    local geoScanner = peripheral.find("geoScanner")
+    if geoScanner == nil then 
+        return error("geoScanner not equiped")
+    end
     ---@type ScanDataTable
-    local result = g.scan(radius)
+    local result = geoScanner.scan(radius)
     if type(result) == "string" then
         return nil;
     end
@@ -95,9 +96,6 @@ local function scan(radius)
         return value
     end
     result = helper.map(result, mapfunc) --[[@as ScanDataTable]]
-    -- Should be on its own program
-    local filePath = settingsService.setget("ScanDataFile", nil, "./ScanData/LastScanData.lua");
-    log.write(result, filePath, "w+")
     return result;
 end
 
@@ -122,8 +120,6 @@ function Scanner.find(distance)
     local scanResult = scan(distance)
     local interestingBlocks = settingsService.setget("InterestingBlocks", nil, defaultInterestingBlocks)
     scanResult = helper.filter(scanResult, filterFunction, interestingBlocks)
-    local filePathFiltered = settingsService.setget("ScanFiltered", nil, "./ScanData/LastScanFiltered.lua");
-    log.write(scanResult, filePathFiltered, "w+")
     return scanResult
 end
 
@@ -148,8 +144,6 @@ function Scanner.sortFilteredScan(scanResult)
         scanResult = HelperFunctions.quickSort(scanResult, i, #scanResult, func, currentPosition);
         currentPosition = scanResult[i];
     end
-    local filePathSorted = settingsService.setget("ScanSorted", nil, "./ScanData/LastScanSorted.lua");
-    log.write(scanResult, filePathSorted, "w+")
     return scanResult;
 end
 
@@ -166,7 +160,7 @@ function Scanner.correctToFacing(dataTable, rotation)
     ---comment
     ---@param data ScanData
     ---@param rotation rotation
-    function map(data, rotation)
+    local function map(data, rotation)
         if rotation == 1 then
             local temp = data.x
             data.x = data.z
