@@ -12,7 +12,7 @@ Scanner = {}
 
 -- REQUIREMENTS
 ---@type scm
-local scm = require("scm")
+local scm = require("./scm")
 --@requires helperFunctions
 ---@class HelperFunctions
 local helper = scm:load("helperFunctions");
