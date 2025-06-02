@@ -19,9 +19,6 @@ local helper = scm:load("helperFunctions");
 --@requires turtleController
 ---@class turtleController
 local tController = scm:load("turtleController")
---@requires settingsManager
----@class settingManager
-local settingsService = scm:load("settingsManager")
 
 -- DEFINITIONS
 
@@ -118,7 +115,7 @@ end
 ---@return ScanDataTable
 function Scanner.find(distance)
     local scanResult = scan(distance)
-    local interestingBlocks = settingsService.setget("InterestingBlocks", nil, defaultInterestingBlocks)
+    local interestingBlocks = settings.get("InterestingBlocks", defaultInterestingBlocks)
     scanResult = helper.filter(scanResult, filterFunction, interestingBlocks)
     return scanResult
 end
